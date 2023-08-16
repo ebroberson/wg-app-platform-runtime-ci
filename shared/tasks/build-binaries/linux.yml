@@ -1,0 +1,19 @@
+---
+platform: linux
+
+inputs:
+- name: ci
+- name: repo
+
+outputs:
+- name: built-binaries
+
+params:
+  DEBUG: false
+  FUNCTIONS: #|
+    #PATH-To-FUNCTIONS-BASH
+  MAPPING: #|
+    # BASH-FUNCTION-NAME=PATH
+
+run:
+  path: ci/shared/tasks/build-binaries/task.bash

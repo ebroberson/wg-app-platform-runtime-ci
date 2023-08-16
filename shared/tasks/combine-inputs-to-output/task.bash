@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -eux
+set -eu
+set -o pipefail
 
 for f in *-input
 do

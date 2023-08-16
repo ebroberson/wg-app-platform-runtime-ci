@@ -6,7 +6,7 @@ oses:
   - windows
 params:
   DIR: path to where you can run `./bin/test{.bash,ps1}`. This is helpful to use when using submodule pattern and wanting to test internal repos without having to create more resources.
-  DEBUG: defaults to false. Turn on debug for more discriptive actions taken by task or test.
+  DEBUG: (defaults to false) Turn on debug for more discriptive actions taken by task or test.
   ENVS: Multiline envs that can be defined dynamically and loaded into the test without having to create more params. e.g. ROOTFS=/tmp/rootfs.tar
   FUNCTIONS:  Multiline functions to be used for extra configuration of binaries. e.g. ci/winc-release/helpers/configure-binaries.ps1
   VERIFICATIONS: Verify helpers functions to run for a give test.
