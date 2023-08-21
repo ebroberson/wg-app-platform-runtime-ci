@@ -1,0 +1,18 @@
+---
+platform: linux
+
+inputs:
+- name: ci
+- name: toolsmiths-env
+- name: cf-deployment-concourse-tasks
+
+outputs:
+- name: created-acceptance-test-configs
+
+params:
+  DEBUG: false
+  CONFIGS:
+  ENVS:
+
+run:
+  path: ci/shared/tasks/create-acceptance-test-config/task.bash

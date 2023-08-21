@@ -1,0 +1,18 @@
+---
+platform: linux
+
+inputs:
+  - name: ci
+  - name: repo
+  - name: toolsmiths-env
+    optional: true
+  - name: bbl-state
+    optional: true
+
+params:
+  RELEASE:
+  OS:  ubuntu
+  DEPLOYMENT: cf
+
+run:
+  path: ci/shared/tasks/bosh-export-release/task.bash
