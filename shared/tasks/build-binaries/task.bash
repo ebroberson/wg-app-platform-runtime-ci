@@ -5,10 +5,15 @@ set -o pipefail
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
+if [[ -n "${DEFAULT_PARAMS:-}" ]]; then
+    . <("$THIS_FILE_DIR/../../../shared/helpers/extract-default-params-for-task.bash" "${DEFAULT_PARAMS}")
+fi
 unset THIS_FILE_DIR
 
 function run(){
     expand_functions
+
+    export GOFLAGS="-buildvcs=false"
 
     local target="$PWD/built-binaries"
 

@@ -6,18 +6,27 @@ inputs:
 - name: repo
 - name: built-binaries
   optional: true
+- name: input-01
+  optional: true
 
 params:
-  DIR:
   DEBUG: false
-  ENVS: #|
-    # ENV_KEY=ENV_VALUE
-  FUNCTIONS: #|
-    #PATH-To-FUNCTIONS-BASH
+  DEFAULT_PARAMS:
+  DIR:
+  ENVS:
+  FLAGS: |
+    --keep-going
+    --trace
+    -r
+    --fail-on-pending
+    --randomize-all
+    -p
+    --race
+    --timeout 20m
+  FUNCTIONS:
   VERIFICATIONS: |
     verify_go
     verify_gofmt
     verify_govet
-
 run:
   path: ci/shared/tasks/run-bin-test/task.bash

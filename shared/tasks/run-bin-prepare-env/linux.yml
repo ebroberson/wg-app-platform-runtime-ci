@@ -1,0 +1,18 @@
+---
+platform: linux
+
+inputs:
+- name: ci
+- name: repo
+- name: toolsmiths-env
+- name: cf-deployment-concourse-tasks
+- name: input-01
+  optional: true
+
+outputs:
+- name: prepared-env-vars-file
+params:
+  DEBUG: false
+  FUNCTIONS:
+run:
+  path: ci/shared/tasks/run-bin-prepare-env/task.bash

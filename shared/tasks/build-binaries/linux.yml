@@ -10,10 +10,9 @@ outputs:
 
 params:
   DEBUG: false
-  FUNCTIONS: #|
-    #PATH-To-FUNCTIONS-BASH
-  MAPPING: #|
-    # BASH-FUNCTION-NAME=PATH
+  FUNCTIONS:
+  MAPPING:
+  DEFAULT_PARAMS:
 
 run:
   path: ci/shared/tasks/build-binaries/task.bash

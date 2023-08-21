@@ -22,3 +22,22 @@ function build_nats_server(){
 export NATS_SERVER_BINARY="\$PWD/${built_dir}/nats-server/run"
 EOF
 }
+
+function build_routing_api_cli(){
+    local source="${1?Provide source dir}"
+    local target="${2?Provide target dir}"
+
+    verify_go
+
+    local built_dir=$(basename "${target}")
+    target="$target/routing-api-cli"
+    mkdir -p "${target}"
+
+    pushd "$source" || exit
+    go build -o "${target}/run" .
+    popd || exit
+
+    cat > "${target}/run.bash" << EOF
+export ROUTING_API_CLI_BINARY="\$PWD/${built_dir}/routing-api-cli/run"
+EOF
+}

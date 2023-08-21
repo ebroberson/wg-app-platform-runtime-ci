@@ -8,3 +8,4 @@ params:
   DEBUG: (defaults to false) Turn on debug for more discriptive actions taken by task or test.
   FUNCTIONS: Multiline parameter that accepts path to (powershell/bash) scripts that define functions to be used. e.g. ci/winc-release/helpers/configure-binaries.ps1
   MAPPING: Multiline parameter that defines maps funcation call to code containing source. e.g. Build-Gdn=src/guardian/cmd/gdn
+  DEFAULT_PARAMS: Path to .yml file containing repo's default-params to use instead. If this value is set, it will override other params set explicitly.

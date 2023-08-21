@@ -6,14 +6,14 @@ inputs:
 - name: repo
 - name: built-binaries
   optional: true
+- name: input-01
+  optional: true
 
 params:
-  DIR:
   DEBUG: false
-  ENVS: #|
-    # ENV_KEY=ENV_VALUE
-  FUNCTIONS: #|
-    #PATH-To-FUNCTIONS-PS1
+  DIR:
+  ENVS:
+  FUNCTIONS:
   VERIFICATIONS: |
     Verify-Go
     Verify-Ginkgo

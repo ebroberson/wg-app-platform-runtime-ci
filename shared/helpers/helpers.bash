@@ -10,6 +10,15 @@ function verify_govet(){
     go vet ./...
 }
 
+function expand_flags(){
+    local list=""
+    for entry in ${FLAGS}
+    do
+        list="${list} ${entry}"
+    done
+    echo -n ${list}
+}
+
 function expand_envs(){
     local env_file="${1?path to env file}"
     debug "expand_envs Starting"
