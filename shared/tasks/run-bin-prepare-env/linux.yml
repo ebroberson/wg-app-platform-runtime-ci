@@ -10,7 +10,7 @@ inputs:
   optional: true
 
 outputs:
-- name: prepared-env-vars-file
+- name: prepared-env
 params:
   DEBUG: false
   FUNCTIONS:

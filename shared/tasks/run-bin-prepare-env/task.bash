@@ -23,7 +23,7 @@ function run(){
     ./bin/prepare-env.bash "$@"
     popd > /dev/null
 
-    cat <<EOF > prepared-env-vars-file/vars.yml
+    cat <<EOF > prepared-env/vars.yml
 ---
 CF_ADMIN_PASSWORD: "${CF_ADMIN_PASSWORD}"
 CF_ENVIRONMENT_NAME: "${CF_ENVIRONMENT_NAME}"
