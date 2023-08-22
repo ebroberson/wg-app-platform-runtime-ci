@@ -119,7 +119,7 @@ function drats() {
     echo "Creating ${file}"
 
     jq -n \
-      --arg cf_api_url "api.${CF_SYSTEM_DOMAIN}" \
+      --arg cf_api_url "https://api.${CF_SYSTEM_DOMAIN}" \
       --arg cf_deployment_name "cf" \
       --arg cf_admin_username "admin" \
       --arg cf_admin_password "${CF_ADMIN_PASSWORD}" \
@@ -130,7 +130,7 @@ function drats() {
       --arg ssh_proxy_cidr "10.0.0.0/8" \
       --arg ssh_proxy_user "jumpbox" \
       --arg ssh_proxy_host "$ssh_proxy_host" \
-      --arg ssh_proxy_private_key "$JUMPBOX_PRIVATE_KEY" \
+      --arg ssh_proxy_private_key "$(cat $JUMPBOX_PRIVATE_KEY)" \
       '{
         "cf_api_url": $cf_api_url,
         "cf_deployment_name": $cf_deployment_name,
