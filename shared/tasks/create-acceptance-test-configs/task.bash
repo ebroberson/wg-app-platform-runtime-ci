@@ -115,9 +115,6 @@ cat  $file | jq .
 
 function drats() {
     local file="${1?Provide config file}"
-    local dirname=$(dirname ${file})
-    local ssh_proxy_private_key="$dirname/ssh_proxy_private_key"
-    cat "${JUMPBOX_PRIVATE_KEY}" > "${ssh_proxy_private_key}"
     echo "Creating ${file}"
     cat << EOF > "${file}" 
 {
@@ -132,7 +129,7 @@ function drats() {
 	"ssh_proxy_cidr": "10.0.0.0/8",
 	"ssh_proxy_user": "jumpbox",
 	"ssh_proxy_host": "$(echo $BOSH_ALL_PROXY | sed 's|ssh+socks5://.*@||g' | sed 's|\:.*$||g')",
-	"ssh_proxy_private_key": "${ssh_proxy_private_key}",
+        "ssh_proxy_private_key": "$(printf %s $(cat ${JUMPBOX_PRIVATE_KEY}))",
 	"include_cf-routing": true
 }
 EOF
