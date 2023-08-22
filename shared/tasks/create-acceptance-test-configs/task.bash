@@ -115,24 +115,38 @@ cat  $file | jq .
 
 function drats() {
     local file="${1?Provide config file}"
+    local ssh_proxy_host=$(echo $BOSH_ALL_PROXY | sed "s|ssh+socks5://.*@||g" | sed "s|\:.*$||g")
     echo "Creating ${file}"
-    cat << EOF > "${file}" 
-{
-	"cf_api_url": "api.${CF_SYSTEM_DOMAIN}",
-    "cf_deployment_name": "$(bosh_cf_deployment_name)",
-	"cf_admin_username": "admin",
-	"cf_admin_password": "${CF_ADMIN_PASSWORD}",
-	"bosh_environment": "${BOSH_ENVIRONMENT}",
-	"bosh_client": "${BOSH_CLIENT}",
-	"bosh_client_secret": "${BOSH_CLIENT_SECRET}",
-    "bosh_ca_cert": "$(printf %s ${BOSH_CA_CERT})",
-	"ssh_proxy_cidr": "10.0.0.0/8",
-	"ssh_proxy_user": "jumpbox",
-	"ssh_proxy_host": "$(echo $BOSH_ALL_PROXY | sed 's|ssh+socks5://.*@||g' | sed 's|\:.*$||g')",
-        "ssh_proxy_private_key": "$(printf %s $(cat ${JUMPBOX_PRIVATE_KEY}))",
-	"include_cf-routing": true
-}
-EOF
+
+    jq -n \
+      --arg cf_api_url "api.${CF_SYSTEM_DOMAIN}" \
+      --arg cf_deployment_name "cf" \
+      --arg cf_admin_username "admin" \
+      --arg cf_admin_password "${CF_ADMIN_PASSWORD}" \
+      --arg bosh_environment "$BOSH_ENVIRONMENT" \
+      --arg bosh_client "$BOSH_CLIENT" \
+      --arg bosh_client_secret "$BOSH_CLIENT_SECRET" \
+      --arg bosh_ca_cert "$BOSH_CA_CERT" \
+      --arg ssh_proxy_cidr "10.0.0.0/8" \
+      --arg ssh_proxy_user "jumpbox" \
+      --arg ssh_proxy_host "$ssh_proxy_host" \
+      --arg ssh_proxy_private_key "$JUMPBOX_PRIVATE_KEY" \
+      '{
+        "cf_api_url": $cf_api_url,
+        "cf_deployment_name": $cf_deployment_name,
+        "cf_admin_username": $cf_admin_username,
+        "cf_admin_password": $cf_admin_password,
+        "bosh_environment": $bosh_environment,
+        "bosh_client": $bosh_client,
+        "bosh_client_secret": $bosh_client_secret,
+        "bosh_ca_cert": $bosh_ca_cert,
+        "ssh_proxy_cidr": $ssh_proxy_cidr,
+        "ssh_proxy_user": $ssh_proxy_user,
+        "ssh_proxy_host": $ssh_proxy_host,
+        "ssh_proxy_private_key": $ssh_proxy_private_key,
+        "include_cf-routing": true
+      }' > $file
+
 cat  $file | jq .
 }
 
