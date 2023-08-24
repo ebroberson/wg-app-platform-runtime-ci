@@ -74,6 +74,7 @@ function cats() {
     "include_v3": false,
     "include_zipkin": true,
     "isolation_segment_name": "${ISO_SEG_NAME}",
+    "isolation_segment_domain": "${ISO_SEG_DOMAIN_PREFIX}.${CF_SYSTEM_DOMAIN}",
     "skip_ssl_validation": true,
     "stacks": ["cflinuxfs4"],
     "timeout_scale": 2,
