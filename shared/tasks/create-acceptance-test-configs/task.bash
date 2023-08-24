@@ -61,7 +61,7 @@ function cats() {
     "include_docker": false,
     "include_http2_routing": false,
     "include_internet_dependent": true,
-    "include_isolation_segments": ${ENABLE_ISOLATION_SEGMENT_TESTS},
+    "include_routing_isolation_segments": ${ENABLE_ISOLATION_SEGMENT_TESTS},
     "include_privileged_container_support": false,
     "include_route_services": true,
     "include_routing": true,
