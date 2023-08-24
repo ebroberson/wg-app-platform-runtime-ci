@@ -3,8 +3,8 @@ platform: linux
 
 inputs:
 - name: ci
-- name: toolsmiths-env
 - name: cf-deployment-concourse-tasks
+- name: toolsmiths-env
 
 outputs:
 - name: created-acceptance-test-configs

@@ -8,9 +8,9 @@ inputs:
   - name: toolsmiths-env
 
 params:
-  RELEASE:
-  OS:  ubuntu
-  DEPLOYMENT: cf
+  DEBUG: false
+  ERRAND_NAME:
+  DEPLOYMENT_NAME:
 
 run:
-  path: ci/shared/tasks/bosh-export-release/task.bash
+  path: ci/shared/tasks/bosh-run-errand/task.bash
