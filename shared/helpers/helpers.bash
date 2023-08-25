@@ -15,9 +15,9 @@ function expand_flags(){
     IFS=$'\n'
     for entry in ${FLAGS}
     do
-        list="${list} ${entry}"
+        list="${list}${entry} "
     done
-    echo -n ${list}
+    echo "${list}"
 }
 
 function expand_envs(){
