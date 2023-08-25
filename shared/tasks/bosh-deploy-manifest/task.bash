@@ -23,7 +23,7 @@ function run(){
     expand_envs "${env_file}"
     . "${env_file}"
 
-    local arguments="$(bosh_extract_vars_from_env_files ${extracted_default_vars_file} ${env_file})"
+    local arguments=$(bosh_extract_vars_from_env_files "${extracted_default_vars_file}\n${env_file}")
     debug "bosh arguments for deploy: ${arguments}"
 
     bosh -d "${DEPLOYMENT_NAME}" deploy -n "${MANIFEST}" ${arguments}

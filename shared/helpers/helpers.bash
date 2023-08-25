@@ -12,20 +12,17 @@ function verify_govet(){
 
 function expand_flags(){
     local list=""
-    local org_ifs=$IFS
     IFS=$'\n'
     for entry in ${FLAGS}
     do
         list="${list} ${entry}"
     done
-    IFS=$org_ifs
     echo -n ${list}
 }
 
 function expand_envs(){
     local env_file="${1?path to env file}"
     # debug "expand_envs Starting"
-    local org_ifs=$IFS
     IFS=$'\n'
     for entry in ${ENVS}
     do
@@ -34,20 +31,17 @@ function expand_envs(){
         echo "Setting env: $key=$value"
         echo "export $key=$value" >> "${env_file}"
     done
-    IFS=$org_ifs
     # debug "expand_envs Ending"
 }
 
 function expand_functions(){
     debug "expand_functions Starting"
-    local org_ifs=$IFS
     IFS=$'\n'
     for entry in ${FUNCTIONS}
     do
         echo "Sourcing: $entry"
         source $entry
     done
-    IFS=$org_ifs
     debug "expand_functions Ending"
 }
 

@@ -21,17 +21,15 @@ export CF_VM_TYPE=$(bosh int $manifest --path /instance_groups/0/vm_type)"
 
 function bosh_extract_vars_from_env_files(){
     local arguments=""
+    IFS=$'\n'
     for file in "${@}"
     do
-        local org_ifs=$IFS
-        IFS=$'\n'
         for entry in $(cat $file)
         do
             local key=$(echo ${entry} | cut -d "=" -f1 | cut -d " " -f2)
             eval $entry
             arguments="${arguments} --var=${key}=${!key}"
         done
-        IFS=$org_ifs
     done
     echo ${arguments}
 }
