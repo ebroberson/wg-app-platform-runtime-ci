@@ -69,6 +69,6 @@ function debug(){
 }
 
 function init_git_author(){
-    git config user.name "${GIT_COMMIT_USERNAME:=App Platform Runtime Working Group CI Bot}"
-    git config user.email "${GIT_COMMIT_EMAIL:=app+platform+runtime+wg+ci@vmware.com}"
+    git config --global user.name "${GIT_COMMIT_USERNAME:=App Platform Runtime Working Group CI Bot}"
+    git config --global user.email "${GIT_COMMIT_EMAIL:=app+platform+runtime+wg+ci@vmware.com}"
 }
