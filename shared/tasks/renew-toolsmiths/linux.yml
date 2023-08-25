@@ -1,0 +1,9 @@
+---
+platform: linux
+
+inputs:
+- name: ci
+- name: toolsmiths-env
+
+run:
+  path: ci/shared/tasks/renew-toolsmiths/task.bash

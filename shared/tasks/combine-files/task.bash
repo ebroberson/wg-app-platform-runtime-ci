@@ -8,5 +8,5 @@ set -o pipefail
 for f in ${GLOB}
 do
   ls $f
-  cp $f ./aggregated-files/"${PREFIX}$(basename $f)"
+  cp $f ./combined-files/"${PREFIX}$(basename $f)"
 done

@@ -63,8 +63,12 @@ function expand_verifications(){
 
 function debug(){
     local msg="${1:-}"
-    if [[ "$DEBUG" != "false" ]]; then
-        set -x
+    if [[ "${DEBUG:=false}" != "false" ]]; then
         echo "$msg"
     fi
+}
+
+function init_git_author(){
+    git config user.name "${GIT_COMMIT_USERNAME:=App Platform Runtime Working Group CI Bot}"
+    git config user.email "${GIT_COMMIT_EMAIL:=app+platform+runtime+wg+ci@vmware.com}"
 }

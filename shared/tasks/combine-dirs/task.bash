@@ -3,8 +3,8 @@
 set -eu
 set -o pipefail
 
-for f in *-input
+for f in input-*
 do
   ls $f
-  cp -r $f/* ./combined-output/
+  cp -r $f/* ./combined-dirs/
 done

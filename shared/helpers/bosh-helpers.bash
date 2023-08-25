@@ -1,7 +1,6 @@
 function bosh_target(){
-    #This relies on toolsmiths-env and cf-deployment-concourse-tasks resources
-    source cf-deployment-concourse-tasks/shared-functions
     eval "$(bbl print-env --metadata-file toolsmiths-env/metadata)"
+    export TOOLSMITHS_ENVIRONMENT_NAME="$(cat toolsmiths-env/name)"
 }
 
 function bosh_manifest(){

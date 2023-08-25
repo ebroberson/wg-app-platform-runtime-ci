@@ -9,10 +9,10 @@ inputs:
   optional: true
 
 outputs:
-- name: aggregated-files
+- name: combined-files
 
 run:
-  path: ci/shared/tasks/aggregate-files/task.bash
+  path: ci/shared/tasks/combine-files/task.bash
 
 params:
   GLOB: ~
