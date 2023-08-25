@@ -5,5 +5,8 @@ inputs:
 - name: ci
 - name: toolsmiths-env
 
+params:
+  TOOLSMITHS_API_TOKEN:
+
 run:
   path: ci/shared/tasks/renew-toolsmiths/task.bash

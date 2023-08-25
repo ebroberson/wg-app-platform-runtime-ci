@@ -9,7 +9,8 @@ unset THIS_FILE_DIR
 
 function run(){
     bosh_target
-    smith renew -e ${TOOLSMITHS_ENVIRONMENT_NAME}
+
+    curl -X POST "https://environments.toolsmiths.cf-app.com/pooled_gcp_engineering_environments/renew?api_token=$TOOLSMITHS_API_TOKEN&name=${TOOLSMITHS_ENVIRONMENT_NAME}"
 }
 
 run
