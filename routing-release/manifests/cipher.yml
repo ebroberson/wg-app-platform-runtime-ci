@@ -1,5 +1,5 @@
 ---
-name: cipher
+name: ((DEPLOYMENT_NAME))
 
 releases:
 - name: cipher-test

@@ -1,0 +1,12 @@
+---
+readme: |
+  This task will deploy a given manifest. A set of default vars would be provided for the manifest. See bosh-helpers.bash file for `bosh_extract_manifest_defaults_from_cf` function. 
+extra_inputs:
+  release-XX: (Optional) Generic release (git resource) to be created in manifest. Manifest can have `version:create` with variable path. The content in this release can then be mapped via ENV variable.
+oses:
+  - linux
+params:
+  DEBUG: (defaults to false) Turn on debug for more discriptive actions taken by task or test.
+  MANIFEST: Path to manifest 
+  DEPLOYMENT_NAME: Name of deployment
+  ENVS: Multiline envs that can be defined dynamically and loaded into the test without having to create more params. Values set here would then be available as a VAR to bosh deploy command. It's also possible to runa single line command for extracting VARS that would only be available when targeting env. e.g. DEPLOYMENT_RELEASE_DIR=$PWD/release-01

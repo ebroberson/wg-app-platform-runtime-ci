@@ -4,7 +4,6 @@ platform: linux
 inputs:
   - name: ci
   - name: repo
-  - name: cf-deployment-concourse-tasks
   - name: toolsmiths-env
   - name: release-01 
     optional: true
@@ -14,5 +13,6 @@ params:
   MANIFEST:
   DEPLOYMENT_NAME:
   ENVS:
+
 run:
   path: ci/shared/tasks/bosh-deploy-manifest/task.bash
