@@ -24,7 +24,7 @@ function run(){
     popd > /dev/null
 
     pushd "cf-deployment" > /dev/null
-    git checkout v${CF_MANIFEST_VERSION}
+    git checkout ${CF_MANIFEST_VERSION}
     popd > /dev/null
     cp -r cf-deployment versioned-cf-deployment
 
