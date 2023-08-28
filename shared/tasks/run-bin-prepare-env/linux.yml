@@ -6,11 +6,14 @@ inputs:
 - name: repo
 - name: toolsmiths-env
 - name: cf-deployment-concourse-tasks
+- name: cf-deployment
 - name: input-01
   optional: true
 
 outputs:
 - name: prepared-env
+- name: versioned-cf-deployment
+
 params:
   DEBUG: false
   FUNCTIONS:

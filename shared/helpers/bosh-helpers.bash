@@ -17,13 +17,18 @@ function bosh_extract_manifest_defaults_from_cf(){
 export CF_AZ=$(bosh int $manifest --path /instance_groups/0/azs/0)
 export CF_NETWORK=$(bosh int $manifest --path /instance_groups/0/networks/0/name)
 export CF_VM_TYPE=$(bosh int $manifest --path /instance_groups/0/vm_type)"
+export JUNk="addd"
 }
 
 function bosh_extract_vars_from_env_files(){
+    local files=${@}
+    debug "Creating bosh vars files from the following files: $files"
     local arguments=""
-    IFS=$'\n'
-    for file in "${@}"
+    IFS=$' '
+    for file in ${files}
     do
+        debug "Adding arugment for file: $file"
+        IFS=$'\n'
         for entry in $(cat $file)
         do
             local key=$(echo ${entry} | cut -d "=" -f1 | cut -d " " -f2)

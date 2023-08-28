@@ -11,7 +11,7 @@ function run(){
     bosh_target
 
     local message=$(curl -X POST "https://environments.toolsmiths.cf-app.com/pooled_gcp_engineering_environments/renew?api_token=$TOOLSMITHS_API_TOKEN&name=${TOOLSMITHS_ENVIRONMENT_NAME}")
-    if  [[ "${message}" != *"Success"* ]]; then
+    if  [[ "${message}" != *"has been renewed"* ]]; then
         echo "Renew failed: $message"
         exit 1
     fi

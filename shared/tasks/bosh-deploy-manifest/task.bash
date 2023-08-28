@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
 export TASK_NAME="bosh-deploy-manifest"
@@ -18,19 +18,19 @@ function run(){
     local cf_manifest="$(mktemp -p ${task_tmp_dir} -t 'XXXXX-cf.yml')"
     bosh_target
     bosh_manifest > "${cf_manifest}"
-    local extracted_default_vars_file="$(mktemp -p ${task_tmp_dir} -t 'XXXXX-vars.yml')"
-    bosh_extract_manifest_defaults_from_cf "${cf_manifest}" > "${extracted_default_vars_file}"
-    debug "Extracted defaults vars from CF: $(cat ${extracted_default_vars_file})"
+    local default_envs_file="$(mktemp -p ${task_tmp_dir} -t 'XXXXX-env.bash')"
+    bosh_extract_manifest_defaults_from_cf "${cf_manifest}" > "${default_envs_file}"
+    debug "Extracted defaults vars from CF: $(cat ${default_envs_file})"
 
     local env_file="$(mktemp -p ${task_tmp_dir} -t 'XXXXX-env.bash')"
     expand_envs "${env_file}"
     . "${env_file}"
     debug "Extracted vars from ENV variable: $(cat ${env_file})"
 
-    local arguments=$(bosh_extract_vars_from_env_files "${extracted_default_vars_file}\n${env_file}")
+    local arguments=$(bosh_extract_vars_from_env_files ${default_envs_file} ${env_file})
     debug "bosh arguments for deploy: ${arguments}"
 
-    bosh -d "${DEPLOYMENT_NAME}" deploy -n "${MANIFEST}" --var=DEPLOYMENT_NAME=${DEPLOYMENT_NAME} ${arguments}
+    eval "bosh -d ${DEPLOYMENT_NAME} deploy -n ${MANIFEST} --var=DEPLOYMENT_NAME=${DEPLOYMENT_NAME}${arguments}"
 }
 
 function cleanup() {

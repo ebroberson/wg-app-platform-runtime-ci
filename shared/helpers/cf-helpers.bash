@@ -4,6 +4,7 @@ function cf_target(){
     export CF_ADMIN_PASSWORD=$(get_password_from_credhub cf_admin_password)
     export CF_ENVIRONMENT_NAME=$(cat toolsmiths-env/name)
     export CF_TCP_DOMAIN="tcp.${CF_SYSTEM_DOMAIN}"
+    export CF_MANIFEST_VERSION=$(bosh int <(bosh_manifest) --path /manifest_version)
 }
 
 function cf_system_domain(){

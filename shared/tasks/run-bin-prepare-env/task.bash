@@ -23,12 +23,18 @@ function run(){
     ./bin/prepare-env.bash "$@"
     popd > /dev/null
 
+    pushd "cf-deployment" > /dev/null
+    git checkout v${CF_MANIFEST_VERSION}
+    popd > /dev/null
+    cp -r cf-deployment versioned-cf-deployment
+
     cat <<EOF > prepared-env/vars.yml
 ---
 CF_ADMIN_PASSWORD: "${CF_ADMIN_PASSWORD}"
 CF_ENVIRONMENT_NAME: "${CF_ENVIRONMENT_NAME}"
 CF_SYSTEM_DOMAIN: "${CF_SYSTEM_DOMAIN}"
 CF_TCP_DOMAIN: "${CF_TCP_DOMAIN}"
+CF_MANIFEST_VERSION: "${CF_MANIFEST_VERSION}"
 EOF
 }
 
