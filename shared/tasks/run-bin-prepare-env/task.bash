@@ -25,8 +25,8 @@ function run(){
 
     pushd "cf-deployment" > /dev/null
     git checkout ${CF_MANIFEST_VERSION}
+    cp -r * ../versioned-cf-deployment
     popd > /dev/null
-    cp -r cf-deployment versioned-cf-deployment
 
     cat <<EOF > prepared-env/vars.yml
 ---
