@@ -17,7 +17,6 @@ function bosh_extract_manifest_defaults_from_cf(){
 export CF_AZ=$(bosh int $manifest --path /instance_groups/0/azs/0)
 export CF_NETWORK=$(bosh int $manifest --path /instance_groups/0/networks/0/name)
 export CF_VM_TYPE=$(bosh int $manifest --path /instance_groups/0/vm_type)"
-export JUNk="addd"
 }
 
 function bosh_extract_vars_from_env_files(){

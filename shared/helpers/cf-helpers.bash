@@ -1,5 +1,4 @@
 function cf_target(){
-    source cf-deployment-concourse-tasks/shared-functions
     export CF_SYSTEM_DOMAIN="$(cf_system_domain)"
     export CF_ADMIN_PASSWORD=$(get_password_from_credhub cf_admin_password)
     export CF_ENVIRONMENT_NAME=$(cat toolsmiths-env/name)
