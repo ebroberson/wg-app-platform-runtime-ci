@@ -3,7 +3,6 @@ platform: linux
 
 inputs:
 - name: ci
-- name: cf-deployment-concourse-tasks
 - name: toolsmiths-env
 
 outputs:

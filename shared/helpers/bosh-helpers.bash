@@ -38,3 +38,24 @@ function bosh_extract_vars_from_env_files(){
     done
     echo ${arguments}
 }
+
+#Copied from https://github.com/cloudfoundry/cf-deployment-concourse-tasks/blob/9d60cd05a75ae674706201fd083ae46617147373/shared-functions#L351-L369
+function get_password_from_credhub() {
+  set +x
+  local bosh_manifest_password_variable_name=$1
+
+  local credential_path=$(credhub find -j -n ${bosh_manifest_password_variable_name} | jq -r .credentials[].name )
+  local credential_paths_len=$(echo ${credential_path} | tr ' ' '\n' | wc -l)
+
+  if [ "${credential_paths_len}" -gt 1 ]; then
+    echo "ambiguous ${bosh_manifest_password_variable_name} variable name; expected one got ${credential_paths_len}" >&2
+    echo "${credential_path}" | tr ' ' '\n' >&2
+    return
+  elif [ "${credential_paths_len}" -eq 0 ]; then
+    echo "${bosh_manifest_password_variable_name} variable not found" >&2
+    return
+  fi
+
+  echo $(credhub find -j -n ${bosh_manifest_password_variable_name} | jq -r .credentials[].name | xargs credhub get -j -n | jq -r .value)
+  set -x
+}

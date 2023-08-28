@@ -7,7 +7,6 @@ THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/bosh-helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/cf-helpers.bash"
-source cf-deployment-concourse-tasks/shared-functions
 unset THIS_FILE_DIR
 
 function run(){
