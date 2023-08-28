@@ -1,9 +1,10 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/bosh-helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/cf-helpers.bash"
@@ -23,15 +24,15 @@ function run(){
     for entry in ${CONFIGS}
     do
         if [[ "$entry" == "cats" ]]; then
-            cats "created-acceptance-test-configs/cats.json"
+            cats "built-acceptance-test-configs/cats.json"
         elif [[ "$entry" == "wats" ]]; then
-            wats "created-acceptance-test-configs/wats.json"
+            wats "built-acceptance-test-configs/wats.json"
         elif [[ "$entry" == "rats" ]]; then
-            rats "created-acceptance-test-configs/rats.json"
+            rats "built-acceptance-test-configs/rats.json"
         elif [[ "$entry" == "drats" ]]; then
-            drats "created-acceptance-test-configs/drats.json"
+            drats "built-acceptance-test-configs/drats.json"
         elif [[ "$entry" == "cfsmoke" ]]; then
-            cfsmoke "created-acceptance-test-configs/cfsmoke.json"
+            cfsmoke "built-acceptance-test-configs/cfsmoke.json"
         else
             echo "Unable to generate config for $entry"
             exit 1
@@ -189,5 +190,6 @@ function wats() {
 }
 
 task_tmp_dir="$(mktemp -d -t 'XXXX-task-tmp-dir')"
+trap 'err_reporter $LINENO' ERR
 trap cleanup EXIT
 run $task_tmp_dir "$@"

@@ -6,11 +6,11 @@ inputs:
 - name: toolsmiths-env
 
 outputs:
-- name: created-acceptance-test-configs
+- name: built-acceptance-test-configs
 
 params:
   CONFIGS:
   ENVS:
 
 run:
-  path: ci/shared/tasks/create-acceptance-test-configs/task.bash
+  path: ci/shared/tasks/build-acceptance-test-configs/task.bash

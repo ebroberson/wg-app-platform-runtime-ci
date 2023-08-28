@@ -1,0 +1,8 @@
+---
+readme: |
+  This task will perform a git merge on the two given branches. 
+oses:
+  - linux
+params:
+  GLOB: Glob to match files
+  PREFIX: Prefix to add to the files

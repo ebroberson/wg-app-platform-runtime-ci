@@ -10,4 +10,4 @@ outputs:
   - name: merged-branch
 
 run:
-  path: ci/shared/tasks/merge-branches/task.bash
+  path: ci/shared/tasks/git-merge-branches/task.bash

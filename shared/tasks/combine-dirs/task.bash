@@ -1,10 +1,19 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
-for f in input-*
-do
-  ls $f
-  cp -r $f/* ./combined-dirs/
-done
+THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
+unset THIS_FILE_DIR
+
+function run() {
+  for f in input-*
+  do
+    ls $f
+    cp -r $f/* ./combined-dirs/
+  done
+}
+
+trap 'err_reporter $LINENO' ERR
+run "$@"
