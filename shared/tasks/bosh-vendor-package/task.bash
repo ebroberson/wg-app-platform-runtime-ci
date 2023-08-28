@@ -1,59 +1,42 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
+source "$THIS_FILE_DIR/../../../shared/helpers/bosh-helpers.bash"
 unset THIS_FILE_DIR
-init_git_author
 
-if [[ -z "${GCP_BLOBSTORE_SERVICE_ACCOUNT_KEY}" ]]; then
-  cat > ${PWD}/repo/config/private.yml <<EOF
----
-blobstore:
-  options:
-    secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
-    access_key_id: "${AWS_ACCESS_KEY_ID}"
-EOF
+function run() {
+  init_git_author
 
-  if [[ -n "${AWS_ASSUME_ROLE_ARN}" ]]; then
-    cat >> ${PWD}/repo/config/private.yml <<EOF
-    assume_role_arn: "${AWS_ASSUME_ROLE_ARN}"
-EOF
-  fi
-fi
+  pushd repo > /dev/null
+  local private_yml="./config/private.yml"
+  bosh_configure_private_yml $private_yml
 
-if [[ -z ${AWS_ACCESS_KEY_ID} ]]; then
-  FORMATTED_KEY="$(sed 's/^/      /' <(echo ${GCP_BLOBSTORE_SERVICE_ACCOUNT_KEY}))"
-  cat > ${PWD}/repo/config/private.yml <<EOF
----
-blobstore:
-  options:
-    credentials_source: static
-    json_key: |
-${FORMATTED_KEY}
-EOF
-fi
-set -x
+  debug "bosh vendor for package: ${PACKAGE_NAME} and prefix: ${PACKAGE_PREFIX}"
 
-pushd repo
   if [[ -n "${PACKAGE_PREFIX}" ]]; then
-    bosh vendor-package "${PACKAGE}" ../package-release --prefix "${PACKAGE_PREFIX}"
+    bosh vendor-package "${PACKAGE_NAME}" ../package-release --prefix "${PACKAGE_PREFIX}"
   else
-    bosh vendor-package "${PACKAGE}" ../package-release
+    bosh vendor-package "${PACKAGE_NAME}" ../package-release
   fi
 
   if [[ -n $(git status --porcelain) ]]; then
     echo "changes detected, will commit..."
     git add --all
-    git commit -m "Upgrade ${PACKAGE}"
+    git commit -m "Upgrade ${PACKAGE_NAME}"
 
     git log -1 --color | cat
   else
-   echo "no changes in repo, no commit necessary"
+    echo "no changes in repo, no commit necessary"
   fi
-popd
 
-shopt -s dotglob
-cp -R repo/* vendored-repo/
+  cp -r . ../vendored-repo/
+  popd > /dev/null
+}
+
+trap 'err_reporter $LINENO' ERR
+run "$@"

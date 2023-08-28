@@ -105,7 +105,7 @@ function rats() {
   "oauth": {
     "token_endpoint": "https://uaa.${CF_SYSTEM_DOMAIN}",
     "client_name": "routing_api_client",
-    "client_secret": "$(get_password_from_credhub routing_api_client)",
+    "client_secret": "$(bosh_get_password_from_credhub routing_api_client)",
     "port": 443,
     "skip_ssl_validation": true
   }

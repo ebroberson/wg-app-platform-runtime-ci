@@ -19,42 +19,9 @@ function run() {
     exit 1
   fi
 
-  cd repo
+  pushd repo > /dev/null
   local private_yml="./config/private.yml"
-
-  set +x
-  if [[ -n "${GCP_BLOBSTORE_SERVICE_ACCOUNT_KEY}" ]]; then
-    debug "Using GCP"
-    local formatted_key="$(sed 's/^/      /' <(echo ${GCP_BLOBSTORE_SERVICE_ACCOUNT_KEY}))"
-    cat > $private_yml <<EOF
----
-blobstore:
-  options:
-    credentials_source: static
-    json_key: |
-${formatted_key}
-EOF
-  fi
-
-  if [[ -n ${AWS_ACCESS_KEY_ID} ]]; then
-    debug "Using AWS Access Key"
-    cat > $private_yml <<EOF
----
-blobstore:
-  options:
-    secret_access_key: "${AWS_SECRET_ACCESS_KEY}"
-    access_key_id: "${AWS_ACCESS_KEY_ID}"
-EOF
-  fi
-
-  if [[ -n "${AWS_ASSUME_ROLE_ARN}" ]]; then
-    debug "Using AWS Role ARN"
-    cat > $private_yml <<EOF
-    assume_role_arn: "${AWS_ASSUME_ROLE_ARN}"
-EOF
-  fi
-
-  set -x
+  bosh_configure_private_yml "$private_yml"
 
   echo "creating final release"
   local release_name="$(yq -r .final_name < ./config/final.yml)"
@@ -63,7 +30,8 @@ EOF
   git add -A
   git commit -m "Release v${version}"
 
-  cp -r . ../finalized-release-repo
+  cp -r . ../finalized-release-repo/
+  popd > /dev/null
 }
 
 trap 'err_reporter $LINENO' ERR
