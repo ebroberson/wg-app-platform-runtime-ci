@@ -9,7 +9,6 @@ outputs:
 - name: built-binaries
 
 params:
-  DEBUG: false
   FUNCTIONS:
   MAPPING:
   DEFAULT_PARAMS:

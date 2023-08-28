@@ -14,7 +14,6 @@ outputs:
 - name: versioned-cf-deployment
 
 params:
-  DEBUG: false
   FUNCTIONS:
 run:
   path: ci/shared/tasks/run-bin-prepare-env/task.bash

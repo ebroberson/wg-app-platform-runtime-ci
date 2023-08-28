@@ -6,7 +6,6 @@ extra_inputs:
 oses:
   - linux
 params:
-  DEBUG: (defaults to false) Turn on debug for more discriptive actions taken by task or test.
   DEFAULT_PARAMS: Path to .yml file containing repo's default-params to use instead. If this value is set, it will override other params set explicitly.
   DIR: path to where you can run `./bin/test.bash`. This is helpful to use when using submodule pattern and wanting to test internal repos without having to create more resources.
 

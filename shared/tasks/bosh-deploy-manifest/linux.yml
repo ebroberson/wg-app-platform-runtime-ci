@@ -9,7 +9,6 @@ inputs:
     optional: true
 
 params:
-  DEBUG: false
   MANIFEST:
   DEPLOYMENT_NAME:
   ENVS:

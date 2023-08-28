@@ -9,7 +9,6 @@ outputs:
 - name: created-acceptance-test-configs
 
 params:
-  DEBUG: false
   CONFIGS:
   ENVS:
 
