@@ -8,4 +8,4 @@ inputs:
   - name: version
 
 run:
-  path: ci/tasks/shared/check-safe-to-release-repo/task.bash
+  path: ci/shared/tasks/check-safe-to-release-repo/task.bash
