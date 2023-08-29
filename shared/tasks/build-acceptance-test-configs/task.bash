@@ -11,15 +11,8 @@ source "$THIS_FILE_DIR/../../../shared/helpers/cf-helpers.bash"
 unset THIS_FILE_DIR
 
 function run(){
-    local task_tmp_dir="${1:?provide temp dir for task}"
-    shift 1
-
     bosh_target
     cf_target
-
-    local env_file="$(mktemp -p ${task_tmp_dir} -t 'XXXXX-env.bash')"
-    expand_envs "${env_file}"
-    . "${env_file}"
 
     for entry in ${CONFIGS}
     do
@@ -40,10 +33,6 @@ function run(){
     done
 }
 
-function cleanup() {
-    rm -rf $task_tmp_dir
-}
-
 function cats() {
     local file="${1?Provide config file}"
     echo "Creating ${file}"
@@ -61,21 +50,21 @@ function cats() {
     "include_docker": false,
     "include_http2_routing": false,
     "include_internet_dependent": true,
-    "include_routing_isolation_segments": ${ENABLE_ISOLATION_SEGMENT_TESTS},
-    "include_isolation_segments": ${ENABLE_ISOLATION_SEGMENT_TESTS},
+    "include_routing_isolation_segments": ${WITH_ISOSEG},
+    "include_isolation_segments": ${WITH_ISOSEG},
     "include_privileged_container_support": false,
     "include_route_services": true,
     "include_routing": true,
-    "include_security_groups": ${ENABLE_DYNAMIC_ASG_TESTS},
+    "include_security_groups": ${WITH_DYNAMIC_ASG},
     "include_services": true,
     "include_ssh": false,
     "include_sso": false,
     "include_tasks": false,
-    "include_tcp_isolation_segments": ${ENABLE_ISOLATION_SEGMENT_TESTS},
+    "include_tcp_isolation_segments": ${WITH_ISOSEG},
     "include_v3": false,
     "include_zipkin": true,
-    "isolation_segment_name": "${ISO_SEG_NAME}",
-    "isolation_segment_domain": "${ISO_SEG_DOMAIN_PREFIX}.${CF_SYSTEM_DOMAIN}",
+    "isolation_segment_name": "persistent_isolation_segment",
+    "isolation_segment_domain": "iso-seg.${CF_SYSTEM_DOMAIN}",
     "skip_ssl_validation": true,
     "stacks": ["cflinuxfs4"],
     "timeout_scale": 2,
@@ -175,9 +164,9 @@ function cfsmoke() {
   "enable_etcd_cluster_check_tests": false,
   "etcd_ip_address": "",
   "backend": "diego",
-  "isolation_segment_name": "${ISO_SEG_NAME}",
-  "isolation_segment_domain": "${ISO_SEG_DOMAIN_PREFIX}.${CF_SYSTEM_DOMAIN}",
-  "enable_isolation_segment_tests": ${ENABLE_ISOLATION_SEGMENT_TESTS},
+  "isolation_segment_name": "persistent_isolation_segment",
+  "isolation_segment_domain": "iso-seg.${CF_SYSTEM_DOMAIN}",
+  "enable_isolation_segment_tests": ${WITH_ISOSEG},
   "skip_ssl_validation": true
 }
 EOF
@@ -189,7 +178,4 @@ function wats() {
     exit 1
 }
 
-task_tmp_dir="$(mktemp -d -t 'XXXX-task-tmp-dir')"
-trap 'err_reporter $LINENO' ERR
-trap cleanup EXIT
-run $task_tmp_dir "$@"
+run "$@"
