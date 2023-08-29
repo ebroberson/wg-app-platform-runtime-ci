@@ -40,6 +40,7 @@ function expand_envs(){
 function expand_functions(){
     debug "expand_functions Starting"
     IFS=$'\n'
+    debug "Bash functions to source: ${FUNCTIONS}"
     for entry in ${FUNCTIONS}
     do
         echo "Sourcing: $entry"

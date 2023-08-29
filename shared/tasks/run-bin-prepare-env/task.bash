@@ -1,9 +1,10 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/bosh-helpers.bash"
 source "$THIS_FILE_DIR/../../../shared/helpers/cf-helpers.bash"
@@ -20,12 +21,15 @@ function run(){
     cf_create_tcp_domain
 
     pushd "repo" > /dev/null
+    debug "Running ./bin/prepare-env.bash for repo"
     ./bin/prepare-env.bash "$@"
     popd > /dev/null
 
+    #checkout cf-deployment version that was originally deployed for this environment
     pushd "cf-deployment" > /dev/null
     git checkout ${CF_MANIFEST_VERSION}
     cp -r * ../versioned-cf-deployment
+    debug "Checked out cf-deployment ${CF_MANIFEST_VERSION} and copied to versioned-cf-deployment"
     popd > /dev/null
 
     cat <<EOF > prepared-env/vars.yml
@@ -44,4 +48,5 @@ function cleanup() {
 
 task_tmp_dir="$(mktemp -d -t 'XXXX-task-tmp-dir')"
 trap cleanup EXIT
+trap 'err_reporter $LINENO' ERR
 run $task_tmp_dir "$@"

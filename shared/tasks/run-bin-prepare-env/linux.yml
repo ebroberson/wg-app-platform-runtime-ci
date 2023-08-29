@@ -6,8 +6,6 @@ inputs:
 - name: repo
 - name: toolsmiths-env
 - name: cf-deployment
-- name: input-01
-  optional: true
 
 outputs:
 - name: prepared-env
