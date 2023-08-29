@@ -1,24 +1,29 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
-ROOT=${PWD}
-DATE=$(date '+%Y-%m-%d %H:%M:%S')
-
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
 unset THIS_FILE_DIR
-init_git_author
 
-pushd repo
+function run(){
+  local task_tmp_dir="${1:?provide temp dir for task}"
+  shift 1
 
-  RELEASE_TARBALL_PATH=${ROOT}/release.tgz
-  bosh create-release --tarball="${RELEASE_TARBALL_PATH}"
+  init_git_author
+
+  pushd repo > /dev/null
+
+  local release_tarball_path="${task_tmp_dir}/release.tgz"
+  bosh create-release --tarball="${release_tarball_path}"
+  debug "Created a release tarball: ${release_tarball_path} for $(get_git_remote_name):"
 
   mkdir -p docs
-  version=$(tar -Oxz "packages/${PACKAGE}.tgz" < "${RELEASE_TARBALL_PATH}" | tar z --list | grep -ohE 'go[0-9]\.[0-9]{1,2}\.[0-9]{0,2}')
-  echo "This file was updated by CI on ${DATE}" > docs/go.version
+  local version=$(tar -Oxz "packages/${PACKAGE}.tgz" < "${release_tarball_path}" | tar z --list | grep -ohE 'go[0-9]\.[0-9]{1,2}\.[0-9]{0,2}')
+  local date=$(date '+%Y-%m-%d %H:%M:%S')
+  echo "This file was updated by CI on ${date}" > docs/go.version
   echo "$version" >> docs/go.version
 
   if [[ -n $(git status --porcelain) ]]; then
@@ -28,11 +33,18 @@ pushd repo
 
     git log -1 --color | cat
   else
-   echo "no changes in repo, no commit necessary"
+    echo "no changes in repo, no commit necessary"
   fi
-popd
 
+  cp -r . ../saved-repo/
+  popd > /dev/null
+}
 
-shopt -s dotglob
-cp -R repo/* modified-repo/
+function cleanup() {
+  rm -rf $task_tmp_dir
+}
 
+task_tmp_dir="$(mktemp -d -t 'XXXX-task-tmp-dir')"
+trap cleanup EXIT
+trap 'err_reporter $LINENO' ERR
+run $task_tmp_dir "$@"

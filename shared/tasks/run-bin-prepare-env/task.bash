@@ -28,7 +28,7 @@ function run(){
     #checkout cf-deployment version that was originally deployed for this environment
     pushd "cf-deployment" > /dev/null
     git checkout ${CF_MANIFEST_VERSION}
-    cp -r * ../versioned-cf-deployment
+    cp -r . ../versioned-cf-deployment/
     debug "Checked out cf-deployment ${CF_MANIFEST_VERSION} and copied to versioned-cf-deployment"
     popd > /dev/null
 

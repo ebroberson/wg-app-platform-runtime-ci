@@ -6,7 +6,7 @@ inputs:
   - name: repo
 
 outputs:
-  - name: modified-repo
+  - name: saved-repo
 
 params:
   PACKAGE:
