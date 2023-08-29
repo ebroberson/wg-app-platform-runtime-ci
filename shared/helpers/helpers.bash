@@ -71,6 +71,10 @@ function init_git_author(){
     git config --global user.email "${GIT_COMMIT_EMAIL:=app+platform+runtime+wg+ci@vmware.com}"
 }
 
+function get_git_remote_name() {
+    basename $(git remote get-url origin)
+}
+
 function err_reporter() {
     echo "---Debug Report Starting--"
     cat "/tmp/$TASK_NAME.log"

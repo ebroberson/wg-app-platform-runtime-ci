@@ -15,7 +15,7 @@ function run(){
 
   pushd repo > /dev/null
   go_version=$(git log -1 --oneline --grep="Update Go version file to" | sed -En 's/.*Update Go version file to go(.*)/\1/p')
-  local release_name="$(basename $(git remote get-url origin))"
+  local release_name="$(get_git_remote_name)"
 
   local spec_diff=$(get_bosh_job_spec_diff)
   popd > /dev/null
