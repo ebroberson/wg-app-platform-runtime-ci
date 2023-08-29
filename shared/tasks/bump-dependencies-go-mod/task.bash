@@ -1,9 +1,10 @@
 #!/bin/bash
 
-set -eu
+set -eEu
 set -o pipefail
 
 THIS_FILE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export TASK_NAME="$(basename $THIS_FILE_DIR)"
 source "$THIS_FILE_DIR/../../../shared/helpers/helpers.bash"
 unset THIS_FILE_DIR
 init_git_author
@@ -43,8 +44,8 @@ function bump() {
   go vet ./...
 }
 
-function main() {
-  cd repo
+function run() {
+  pushd repo > /dev/null
 
   git submodule update --remote --recursive
   if [[ $(git status --porcelain) ]]; then
@@ -61,7 +62,7 @@ function main() {
     echo "---Updating go-mod dependencies for ${dir_name}"
 
     echo "$dir_name"
-    pushd "$dir_name"
+    pushd "$dir_name" > /dev/null
 
     #update dependencies (avoids submodules)
     bump
@@ -75,7 +76,7 @@ function main() {
       git commit -F <(git_diff_pretty $go_mod)
     fi
 
-    popd
+    popd > /dev/null
   done
 
   ./scripts/sync-package-specs || true
@@ -85,7 +86,9 @@ function main() {
   fi
 
   rsync -av $PWD/ "$CURRENT_DIR/bumped-repo"
+  popd > /dev/null
 }
 
 process_replace_directives
-main
+trap 'err_reporter $LINENO' ERR
+run "$@"

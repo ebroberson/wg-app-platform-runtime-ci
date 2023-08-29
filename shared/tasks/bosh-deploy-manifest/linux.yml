@@ -9,9 +9,9 @@ inputs:
     optional: true
 
 params:
-  MANIFEST:
   DEPLOYMENT_NAME:
   ENVS:
+  MANIFEST:
 
 run:
   path: ci/shared/tasks/bosh-deploy-manifest/task.bash

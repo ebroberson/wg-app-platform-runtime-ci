@@ -9,7 +9,7 @@ inputs:
 params:
   RELEASE:
   OS:  ubuntu
-  DEPLOYMENT: cf
+  DEPLOYMENT_NAME: cf
 
 run:
   path: ci/shared/tasks/bosh-export-release/task.bash

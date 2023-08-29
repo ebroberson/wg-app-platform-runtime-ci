@@ -3,7 +3,7 @@ readme: |
   This task will run respective `./bin/test{.bash,ps1}` for different OSes. In order to to make this task more generalized by setting up env variables and defining functions for the actual test, it will source FUNCTIONS and ENVS defined within the task before calling the respective test file. 
 extra_inputs:
   built-binaries: (Optional) This will optionally take built-binaries (chained with build-binaries task) that have corresponding source files (run.ps1/run.bash) to be used at runtime.
-  input-XX: (Optional) Generic inputs for passing in config files or files needed to run the test. ENVS would be updated with the path to access those files. e.g. CONFIG=$PWD/input-01/config.json
+  input-*: (Optional) Generic inputs for passing in config files or files needed to run the test. ENVS would be updated with the path to access those files. e.g. CONFIG=$PWD/input-01/config.json
 oses:
   - linux
   - windows

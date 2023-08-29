@@ -1,0 +1,6 @@
+---
+readme: |
+  This task will lint all ci tasks running in this repo
+oses:
+  - linux
+

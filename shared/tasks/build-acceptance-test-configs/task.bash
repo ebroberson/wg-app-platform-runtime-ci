@@ -178,4 +178,5 @@ function wats() {
     exit 1
 }
 
+trap 'err_reporter $LINENO' ERR
 run "$@"
