@@ -22,7 +22,7 @@ function run(){
 
     pushd "repo" > /dev/null
     debug "Running ./bin/prepare-env.bash for repo"
-    ./bin/prepare-env.bash "$@"
+    ./bin/prepare-cf-deployment-env.bash "$@"
     popd > /dev/null
 
     #checkout cf-deployment version that was originally deployed for this environment
