@@ -9,6 +9,12 @@ ENV CGO_ENABLED 0
 COPY throttled-or-not .
 RUN go build -o /throttled-or-not /go/src/app/throttled-or-not.go
 
+FROM golang as hello-world
+WORKDIR /go/src/app
+ENV CGO_ENABLED 0
+COPY hello-world.go .
+RUN go build -o /hello-world /go/src/app/hello-world.go
+
 FROM busybox:${BUSYBOX_VERSION}
 
 ARG BUSYBOX_VERSION
@@ -16,6 +22,8 @@ ARG BUSYBOX_VERSION
 ADD seed /etc/seed
 RUN chmod 0644 /etc/seed
 COPY --from=usemem-builder  /usemem /bin/usemem
+RUN cp /bin/usemem /bin/usemem-with-setuid
+RUN chmod u+s /bin/usemem-with-setuid
 
 RUN echo "BUSYBOX_VERSION: ${BUSYBOX_VERSION}" >  /base-image-version.txt
 
@@ -45,6 +53,13 @@ RUN mkdir -p /test/foo && \
    touch /test/foo/bar/3
 RUN rm -rf /test/foo/*
 
+# for cfgarden/with-whiteout
+RUN touch file-to-be-deleted
+RUN touch existing-file
+RUN mkdir -p folder
+RUN rm file-to-be-deleted
+RUN rm -rf folder
+
 # copied from cfgarden/overwrite-link
 RUN echo "source!" > /etc/link-source
 RUN echo "WHAT?" > /tmp/symlink
@@ -54,15 +69,20 @@ RUN rm /tmp/symlink && ln -s /etc/link-source /tmp/symlink
 COPY --from=throttled-or-not-builder /throttled-or-not /bin/throttled-or-not
 
 # copied from cfgarden/with-process-env
-ENV PATH /usr/local/bin:/usr/bin:/bin:/from-dockerfile
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/from-dockerfile
 ENV TEST test-from-dockerfile
 ENV TEST second-test-from-dockerfile:$TEST
+RUN mkdir -p /sbin
+COPY --from=hello-world /hello-world /sbin/hello-world
 
 # copied from cfgarden/with-user-with-group
-RUN addgroup gardenparty -g 1010
 RUN addgroup gardenparty2 -g 1011
+RUN addgroup gardenparty -g 1010
 RUN adduser -D -G gardenparty alice
 RUN adduser alice gardenparty2
+RUN touch /home/alice/alicesfile
+
+RUN echo "this is a pre-existing dotfile" > /.foo
 
 # copied from cfgarden/with-volume
 RUN mkdir /etc/foo
