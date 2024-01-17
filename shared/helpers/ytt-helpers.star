@@ -42,10 +42,33 @@ def privileged(package):
     return False
 end
 
+def packages_names_array(packages = []):
+    l = []
+ for p in packages:
+     if hasattr(p, "name"):
+         if p.name:
+             l.append(p.name)
+     end
+   end
+ end
+ return l
+end
+
+def on_branch(package):
+    if hasattr(package, "on_branch"):
+        if package.on_branch:
+            return package.on_branch
+        end
+    end
+    return "main"
+end
+
 helpers = struct.make(
     packages_with_configure_db=packages_with_configure_db,
     packages_without_configure_db=packages_without_configure_db,
+    packages_names_array=packages_names_array,
     on_windows=on_windows,
-    privileged=privileged
+    privileged=privileged,
+    on_branch=on_branch
 )
 

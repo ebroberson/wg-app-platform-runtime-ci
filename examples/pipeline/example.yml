@@ -226,8 +226,8 @@ jobs:
       package-release: golang-release-latest
     params:
       PACKAGE_NAME: golang-*-linux
-      AWS_ACCESS_KEY_ID: ((aws-s3-295558626344-garden-linux-release/access-key-id))
-      AWS_SECRET_ACCESS_KEY: ((aws-s3-295558626344-garden-linux-release/secret-access-key))
+      AWS_ACCESS_KEY_ID: ((aws-s3-garden-linux-release/access-key-id))
+      AWS_SECRET_ACCESS_KEY: ((aws-s3-garden-linux-release/secret-access-key))
 
   - put: repo
     params:
